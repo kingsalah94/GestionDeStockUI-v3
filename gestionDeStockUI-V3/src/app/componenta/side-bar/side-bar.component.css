@@ -1,0 +1,45 @@
+.sidenav-header{
+  padding-top: 24px ;
+  text-align: center;
+
+  >img{
+    border-radius: 100%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+}
+.header-text{
+  >h2{
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  .hide-header-text{
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+  }
+}
+
+/* make the nav-list a full-height column-flex container */
+.sidenav-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0;                 /* remove default padding if desired */
+  box-sizing: border-box;
+}
+
+/* group links at the top */
+.nav-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.logout-button {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;       /* ou bottom: env(safe-area-inset-bottom) pour mobile */
+  width: 100%;
+}
+
