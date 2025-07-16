@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Correction de Stock</h1>
+<div mat-dialog-content>
+  <mat-form-field class="full-width" appearance="outline">
+    <mat-label>Quantité</mat-label>
+    <input matInput type="number" [(ngModel)]="quantity" />
+  </mat-form-field>
+
+  <mat-form-field class="full-width" appearance="outline">
+    <mat-label>Type de correction</mat-label>
+    <mat-select [(ngModel)]="operation">
+      <mat-option value="positive">Correction positive</mat-option>
+      <mat-option value="negative">Correction négative</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary" (click)="submit()">Enregistrer</button>
+</div>

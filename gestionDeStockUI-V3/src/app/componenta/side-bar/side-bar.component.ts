@@ -1,5 +1,6 @@
 import {Component, computed, Input, signal} from '@angular/core';
 import {Router} from '@angular/router';
+import {AuthService} from '../../services/auth.service';
 
 export type MenuItem={
   icon: string;
@@ -16,7 +17,7 @@ export class SideBarComponent {
   @Input() set collapsed(value: boolean) {
     this.sidNavCollapsed.set(value)
   }
-  constructor(private router:Router) {
+  constructor(private router:Router,private authService: AuthService) {
   }
   public profilePic ='assets/salah.png';
   profilePicSize = computed(() => this.sidNavCollapsed() ? '32' : '100');
@@ -24,42 +25,53 @@ export class SideBarComponent {
     {
       icon:'dashboard',
       label: 'Dashboard',
-      route: "/dashboard"
-    },{
+      route: "dashboard"
+    },
+    {
       icon:'pie_chart',
       label: 'globale view',
-      route: '/globalview'
-    },{
+      route: 'globalview'
+    },
+    {
       icon:'bar_chart',
       label: 'Statistique',
-      route: '/statistique'
-    },{
+      route: 'statistique'
+    },
+    {
       icon:'list_alt',
       label: 'Articles',
-      route: '/articles'
-    },{
-      icon:'timeline',
-      label: 'MouvementDeStock',
-      route: '/mouvementStock'
-    },{
+      route: 'articles'
+    },
+    {
+      icon: 'shopping_cart',
+      label: 'Ligne de vente',
+      route: 'vente'
+    },
+    {
       icon:'people',
       label: 'Clients',
-      route: '/clients'
-    },{
+      route: 'clients'
+    },
+    {
       icon:'shopping_cart_outlined',
       label: 'Command Client',
-      route: '/command-clients'
-    },{
+      route: 'command-clients'
+    },
+    {
       icon:'storefront',
       label: 'Fournisseurs',
-      route: '/fournisseurs'
-    },{
+      route: 'fournisseurs'
+    },
+    {
       icon:'inventory',
       label: 'Commande Fournisseurs',
-      route: '/command-fournisseurs'
+      route: 'command-fournisseurs'
     },
   ])
 
+  logOut() {
+    this.authService.logOut();
+  }
   navigate(route?: string): void {
     this.router.navigate([route]);
   }

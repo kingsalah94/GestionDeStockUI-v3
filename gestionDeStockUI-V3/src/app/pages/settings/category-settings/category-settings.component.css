@@ -1,0 +1,24 @@
+.containers {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.spacer {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.slide-panel {
+  width: 350px;
+  border-left: 1px solid #ccc;
+  height: 100%;
+  position: relative;
+  overflow-y: auto;
+  background: white;
+}

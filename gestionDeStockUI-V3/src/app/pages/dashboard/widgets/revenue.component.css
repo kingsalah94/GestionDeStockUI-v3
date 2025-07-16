@@ -1,0 +1,31 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.start {
+  font-size: 28px;
+  font-weight: normal;
+  color: white;
+  margin: 0;
+}
+
+.text-green {
+  color: #00e676;
+  font-size: 16px;
+}
+
+.text-dim-grey {
+  color: #cfd8dc;
+  font-size: 12px;
+}
+
+.stat-subtext {
+  margin-top: 4px;
+}
+
+.stat-subtext .text-green {
+  font-weight: 500;
+}

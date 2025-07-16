@@ -1,0 +1,60 @@
+.containers {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+mat-card {
+  flex: 1 1 auto;
+}
+
+mat-card-title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.spacer {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+mat-form-field {
+  min-width: 160px;
+}
+
+.actions {
+  text-align: right;
+  margin-top: 16px;
+}
+
+mat-icon {
+  vertical-align: middle;
+}
+
+mat-menu-item mat-icon {
+  margin-right: 8px;
+}
+
+mat-card-content {
+  padding: 16px;
+}
+
+.paginator {
+  margin-top: 16px;
+}
+
+/* panneau latéral add/edit */
+.panel-right {
+  width: 400px;
+  min-width: 300px
+}

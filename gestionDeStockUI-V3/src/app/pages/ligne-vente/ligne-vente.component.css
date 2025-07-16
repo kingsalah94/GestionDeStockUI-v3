@@ -1,0 +1,33 @@
+.containers {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.spacer {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.summary p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.text-success {
+  color: green;
+}
+
+.text-warning {
+  color: orange;
+}
+
+.text-info {
+  color: #2196f3;
+}

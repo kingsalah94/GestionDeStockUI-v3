@@ -1,0 +1,30 @@
+/* Styles (global ou component) */
+.spacer {
+  display: flex ;
+  justify-content: space-between ;/* optionnel, pour un peu de marge */
+  gap: 16px;              /* espace entre les items */
+  padding: 8px 0;
+}
+
+.filter-field {
+  height: 10px; /* largeur minimale si tu veux */
+}
+
+.add-button {
+  white-space: nowrap;    /* garde le texte sur une ligne */
+}
+
+
+/* store-articles.component.css */
+.containers {
+  padding: 16px;
+}
+
+.add-panel {
+  width: 300px; /* ou la largeur voulue */
+}
+
+/* champs pleine largeur dans le panneau d’ajout */
+.full-width {
+  width: 100%;
+}

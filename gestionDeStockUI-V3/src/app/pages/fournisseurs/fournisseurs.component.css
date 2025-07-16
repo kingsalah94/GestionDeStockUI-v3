@@ -1,0 +1,17 @@
+.full-width {
+  width: 100%;
+}
+
+.containers {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.mat-card {
+  padding: 16px;
+}
+
+table {
+  width: 100%;
+}

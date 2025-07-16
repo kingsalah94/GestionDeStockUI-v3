@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
+import {MatExpansionPanel} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-mouvement-stock',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class MouvementStockComponent {
 
+  @ViewChild(MatExpansionPanel) panel!: MatExpansionPanel;
+
+  filterdata($event: Event) {
+
+  }
 }

@@ -1,1 +1,45 @@
-<p>login works!</p>
+
+
+
+<div class="login-form">
+  <mat-card [formGroup]="loginForm" >
+    <mat-card-header>
+      <mat-card-title><p>Login</p></mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content style="padding: 10px">
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="">
+        <!-- Nom d'utilisateur -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nom d'utilisateur</mat-label>
+          <input matInput formControlName="username" autocomplete="username" />
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched">
+            Champ requis
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Mot de passe -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="current-password" />
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            Champ requis
+          </mat-error>
+        </mat-form-field>
+        <!-- Message d'erreur général -->
+        <div *ngIf="loginFailed" class="error-message">
+          <mat-icon color="warn">error</mat-icon>
+          Identifiants incorrects.
+        </div>
+
+      <div class="actions" style="text-align: right; margin-top: 16px;">
+        <button mat-button style="margin-right: 8px" >S'inscrire</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+          LogIn
+        </button>
+      </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+

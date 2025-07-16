@@ -22,15 +22,12 @@
         {{ item.label }}
       </span>
     </a>
-
-
   </div>
  <div>
    <!-- logout button -->
    <button mat-button class="logout-button" >
      <mat-icon>logout</mat-icon>
-     <span *ngIf="!sidNavCollapsed()">Déconnexion</span>
+     <span *ngIf="!sidNavCollapsed()" (click)="logOut()" >Déconnexion</span>
    </button>
  </div>
-
 </mat-nav-list>

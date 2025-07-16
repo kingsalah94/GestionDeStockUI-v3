@@ -1,0 +1,60 @@
+.global-container {
+  padding: 24px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  padding: 8px;
+}
+
+.stat-icon {
+  font-size: 32px;
+  margin-right: 8px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.variation {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
+
+.row-graphs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.graph-card {
+  flex: 1 1 45%;
+  min-width: 300px;
+  max-width: 500px;
+  height: 320px;
+}
+
+.graph-card canvas {
+  max-height: 240px;
+}
+
+.mt-4 {
+  margin-top: 32px;
+}

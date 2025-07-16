@@ -1,0 +1,30 @@
+.dashboard {
+  margin: 16px;
+}
+
+.kpi-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.kpi-card {
+  flex: 1 1 200px;
+  text-align: center;
+  /*background-color: #f5f5f5;*/
+  mat-icon {
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+}
+
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.chart-card {
+  flex: 1 1 45%;
+}

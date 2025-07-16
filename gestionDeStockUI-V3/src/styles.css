@@ -1,5 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+/*!* You can add global styles to this file, and also import other style files *!*/
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/*body {*/
+/*  background-color: var(--bg-color);*/
+/*  color: var(--text-color);*/
+/*  transition: background-color 0.3s ease;*/
+/*  height: 100%;*/
+/*  margin: 0;*/
+/*  font-family: Roboto, "Helvetica Neue", sans-serif;*/
+/*}*/
+
+/*.container { padding: 10px; }*/
+
+/*!* Thème clair par défaut *!*/
+/*.light-theme {*/
+/*  --bg-color: #ffffff;*/
+/*  --text-color: #000000;*/
+/*}*/
+
+/*!* Thème sombre *!*/
+/*.dark-theme {*/
+/*  --bg-color: #121212;*/
+/*  --text-color: #ffffff;*/
+/*}*/
+
 

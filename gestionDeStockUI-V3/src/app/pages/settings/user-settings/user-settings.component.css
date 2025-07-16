@@ -1,0 +1,75 @@
+.containers {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* ✅ Partie principale */
+mat-card {
+  border-radius: 8px;
+}
+
+/* ✅ Barre de recherche et boutons */
+.spacer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* ✅ Champs full width */
+.full-width {
+  width: 100%;
+}
+
+/* ✅ Table */
+table {
+  width: 100%;
+  overflow: auto;
+}
+
+mat-header-cell,
+mat-cell {
+  padding: 12px 16px;
+}
+
+mat-header-cell {
+  font-weight: 600;
+  background-color: #f3f3f3;
+}
+
+mat-row:nth-child(even) {
+  background-color: #fafafa;
+}
+
+mat-row:hover {
+  background-color: #e0f7fa;
+}
+
+/* ✅ Panel d'ajout / édition */
+mat-card-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ✅ Boutons d’action */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ✅ Responsive panneau latéral */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  mat-card[style*="width: 400px;"] {
+    width: 100% !important;
+  }
+}

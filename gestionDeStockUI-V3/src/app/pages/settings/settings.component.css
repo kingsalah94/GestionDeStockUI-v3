@@ -1,0 +1,49 @@
+.settings-wrapper {
+  margin: 15px;
+}
+
+.settings-container {
+  display: flex;
+  height: 100%;
+}
+
+.settings-sidebar {
+  width: 220px;
+  border-right: 1px solid #ccc;
+  transition: width 0.3s ease;
+}
+
+.settings-sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.sidebar-title {
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.settings-content {
+  flex: 1;
+  padding: 24px;
+}
+
+mat-list-item {
+  cursor: pointer;
+}
+
+mat-list-item.active {
+  background-color: rgba(227, 242, 253, 0);
+  font-weight: bold;
+}
+
+mat-icon.me-2 {
+  margin-top: 8px;
+  margin-bottom: 0;
+  margin-right: 10px;
+}

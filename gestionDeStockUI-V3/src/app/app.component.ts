@@ -8,6 +8,4 @@ import {Component, computed, signal} from '@angular/core';
 export class AppComponent {
   title = 'gestionDeStockUI-v3';
 
-  collapsed = signal(false);
-  sidenavWith = computed(() => this.collapsed() ? '65px' : '250px');
 }

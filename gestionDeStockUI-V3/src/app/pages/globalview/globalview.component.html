@@ -1,1 +1,112 @@
-<p>globalview works!</p>
+<div class="global-container">
+  <h2 class="title">Tableau de bord global</h2>
+  <div class="filter-period" style="margin-bottom: 24px; display: flex; gap: 16px; align-items: center;">
+    <mat-form-field appearance="outline">
+      <mat-label>Du</mat-label>
+      <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Au</mat-label>
+      <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="applyDateFilter()">
+      <mat-icon>filter_alt</mat-icon> Appliquer
+    </button>
+  </div>
+
+  <!-- Section Cartes Statistiques -->
+  <div class="stats-grid">
+    <mat-card class="stat-card" *ngFor="let stat of statistics">
+      <mat-card-header>
+        <mat-icon class="stat-icon" color="primary">{{ stat.icon }}</mat-icon>
+        <mat-card-title>{{ stat.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <h2 class="stat-value">{{ stat.value }}</h2>
+        <div class="variation" [ngClass]="{'positive': stat.variation >= 0, 'negative': stat.variation < 0}">
+          <mat-icon>{{ stat.variation >= 0 ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+          {{ stat.variation }}%
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Section Graphiques -->
+  <div class="row-graphs">
+    <mat-card class="graph-card">
+      <mat-card-header>
+        <mat-card-title>Commandes mensuelles</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <canvas baseChart
+                [type]="'bar'"
+                [data]="barChartData"
+                [options]="barChartOptions">
+        </canvas>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="graph-card">
+      <mat-card-header>
+        <mat-card-title>Répartition du Stock</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <canvas baseChart
+                [type]="'pie'"
+                [data]="pieChartData"
+                [options]="pieChartOptions">
+        </canvas>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <mat-card class="mt-4">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>list_alt</mat-icon> Dernières commandes
+      </mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <table mat-table [dataSource]="lastOrders" class="mat-elevation-z2" style="width: 100%">
+
+        <!-- Client -->
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef>Client</th>
+          <td mat-cell *matCellDef="let order">{{ order.client }}</td>
+        </ng-container>
+
+        <!-- Date -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let order">{{ order.date | date }}</td>
+        </ng-container>
+
+        <!-- Total -->
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total</th>
+          <td mat-cell *matCellDef="let order">{{ order.total }} FCFA</td>
+        </ng-container>
+
+        <!-- Statut -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let order">
+          <span [ngClass]="{'text-success': order.status === 'Livrée', 'text-warning': order.status === 'En cours'}">
+            {{ order.status }}
+          </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['client', 'date', 'total', 'status']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['client', 'date', 'total', 'status'];"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+</div>

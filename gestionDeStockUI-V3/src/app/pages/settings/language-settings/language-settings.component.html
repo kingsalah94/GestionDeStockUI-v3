@@ -1,0 +1,9 @@
+<h2>Langue de l'application</h2>
+
+<mat-form-field appearance="outline" style="width: 300px;">
+  <mat-label>Choisir une langue</mat-label>
+  <mat-select [(value)]="selectedLang" (selectionChange)="onChangeLanguage($event.value)">
+    <mat-option value="fr">Français</mat-option>
+    <mat-option value="en">English</mat-option>
+  </mat-select>
+</mat-form-field>

@@ -1,0 +1,43 @@
+.add-button {
+  white-space: nowrap;    /* garde le texte sur une ligne */
+}
+
+/* store-articles.component.css */
+.login-container {
+  padding: 16px;
+  margin-top: 200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 500px;
+  justify-content: center !important;
+}
+
+.add-panel {
+  width: 300px; /* ou la largeur voulue */
+}
+
+
+.login-form {
+  max-width: 500px;
+  margin-top: 200px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  color: #f44336;
+  font-size: 14px;
+  margin-top: 12px;
+  gap: 8px;
+}
+

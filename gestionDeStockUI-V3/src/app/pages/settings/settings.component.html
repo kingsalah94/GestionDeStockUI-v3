@@ -1,1 +1,38 @@
-<p>settings works!</p>
+<mat-card class="settings-wrapper">
+  <div class="settings-container">
+
+    <!-- Sidebar -->
+    <div class="mat-elevation-z3"  [class.collapsed]="collapsed">
+      <mat-toolbar>
+        <div>
+          <button mat-icon-button (click)="toggleSidebar()">
+            <mat-icon>menu</mat-icon>
+          </button>
+          <span *ngIf="!collapsed" class="sidebar-title">Paramètres</span>
+        </div>
+      </mat-toolbar>
+
+      <mat-nav-list>
+        <mat-list-item
+          *ngFor="let item of menuItems"
+          [class.active]="item.key === activeTab"
+          (click)="setActiveTab(item.key)">
+          <mat-icon class="me-2">{{ item.icon }}</mat-icon>
+          <span *ngIf="!collapsed">{{ item.label }}</span>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+
+    <!-- Content -->
+    <div class="settings-content">
+      <ng-container [ngSwitch]="activeTab">
+        <app-theme-settings *ngSwitchCase="'theme'"></app-theme-settings>
+        <app-language-settings *ngSwitchCase="'langue'"></app-language-settings>
+        <app-user-settings *ngSwitchCase="'utilisateurs'"></app-user-settings>
+        <app-category-settings *ngSwitchCase="'categories'"></app-category-settings>
+        <app-tva-settings *ngSwitchCase="'tva'"></app-tva-settings>
+        <app-roles-settings *ngSwitchCase="'roles'"></app-roles-settings>
+      </ng-container>
+    </div>
+  </div>
+</mat-card>

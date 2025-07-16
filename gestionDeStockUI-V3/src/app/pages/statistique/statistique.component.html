@@ -1,1 +1,46 @@
-<p>statistique works!</p>
+<mat-card class="dashboard">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon color="primary">insights</mat-icon> Statistiques Générales
+    </mat-card-title>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+
+    <!-- Indicateurs (KPI) -->
+    <div class="kpi-grid">
+      <mat-card class="kpi-card" *ngFor="let kpi of kpiData">
+        <mat-card-title>
+          <mat-icon>{{ kpi.icon }}</mat-icon> {{ kpi.label }}
+        </mat-card-title>
+        <mat-card-content>
+          <h2>{{ kpi.value }}</h2>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="charts">
+      <div class="chart-card">
+        <canvas baseChart
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="chartOptions"
+                [legend]="true"
+                chartType="line">
+        </canvas>
+      </div>
+
+      <div class="chart-card">
+        <canvas baseChart
+                [datasets]="pieChartData"
+                [labels]="pieChartLabels"
+                [options]="chartOptions"
+                [legend]="true"
+                chartType="pie">
+        </canvas>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

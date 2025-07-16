@@ -1,0 +1,53 @@
+.containers {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+mat-card {
+  flex: 1 1 auto;
+}
+
+mat-card-title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.spacer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.filter-field {
+  /* largeur minimale si tu veux */
+  width: auto;
+  flex: 1;
+  margin-top: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+mat-form-field {
+  min-width: 160px;
+}
+
+.actions {
+  text-align: right;
+  margin-top: 16px;
+}
+
+mat-menu-item mat-icon {
+  margin-right: 8px;
+}
+
+.panel-right {
+  width: 100px;
+}
