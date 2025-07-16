@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Détails de la commande</h2>
+
+<mat-dialog-content class="details-container">
+  <p><strong>Client :</strong> {{ data.client }}</p>
+  <p><strong>Date :</strong> {{ data.date | date }}</p>
+  <p><strong>Statut :</strong> {{ data.statut }}</p>
+  <p><strong>Paiement :</strong> {{ data.paiement }}</p>
+
+  <h3>Lignes de commande :</h3>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Article</th>
+      <th>Quantité</th>
+      <th>Prix HT</th>
+      <th>TVA</th>
+      <th>Total HT</th>
+      <th>Total TTC</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ligne of data.lignes">
+      <td>{{ ligne.article }}</td>
+      <td>{{ ligne.quantite }}</td>
+      <td>{{ ligne.prixHT | number:'1.2-2' }} FCFA</td>
+      <td>{{ ligne.tva }} %</td>
+      <td>{{ ligne.totalHT | number:'1.2-2' }} FCFA</td>
+      <td>{{ ligne.totalTTC | number:'1.2-2' }} FCFA</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="totaux">
+    <p><strong>Total HT :</strong> {{ data.totalHT | number:'1.2-2' }} FCFA</p>
+    <p><strong>TVA :</strong> {{ data.totalTVA | number:'1.2-2' }} FCFA</p>
+    <p><strong>Total TTC :</strong> {{ data.totalTTC | number:'1.2-2' }} FCFA</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fermer</button>
+  <button mat-raised-button color="primary" (click)="generatePDF()">
+    <mat-icon>picture_as_pdf</mat-icon> Générer PDF
+  </button>
+</mat-dialog-actions>

@@ -79,6 +79,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatDatepicker, MatDatepickerModule, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import { LigneVenteComponent } from './pages/ligne-vente/ligne-vente.component';
+import { VenteDetailsDialogComponent } from './componenta/vente-details-dialog/vente-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,8 @@ import { LigneVenteComponent } from './pages/ligne-vente/ligne-vente.component';
     TvaSettingsComponent,
     RolesSettingsComponent,
     CommandClientComponent,
-    LigneVenteComponent
+    LigneVenteComponent,
+    VenteDetailsDialogComponent
   ],
   imports: [
     BrowserModule,

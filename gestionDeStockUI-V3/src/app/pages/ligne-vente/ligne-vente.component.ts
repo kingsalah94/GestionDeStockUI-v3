@@ -2,6 +2,10 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import Papa from 'papaparse';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
+import autoTable from 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
+import {VenteDetailsDialogComponent} from '../../componenta/vente-details-dialog/vente-details-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 interface LigneCommande {
   article: string;
   quantite: number;
@@ -43,7 +47,16 @@ export class LigneVenteComponent implements AfterViewInit {
   articlesList: LigneCommande[] = [];
   filtrePaiement: string = '';
   filtreTexte: string = '';
+  logoBase64 = 'assets/user.png'; // tronqué ici
 
+  constructor(private dialog: MatDialog) {}
+
+  viewDetails(commande: Commande) {
+    this.dialog.open(VenteDetailsDialogComponent, {
+      width: '800px',
+      data: commande
+    });
+  }
 
   venteForm: {
     client: string;
@@ -183,9 +196,9 @@ export class LigneVenteComponent implements AfterViewInit {
     this.venteDataSource.data = this.venteDataSource.data.filter(c => c.id !== id);
   }
 
-  viewDetails(cmd: Commande) {
-    console.log(cmd);
-  }
+  // viewDetails(cmd: Commande) {
+  //   console.log(cmd);
+  // }
 
   filterVentes(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -217,6 +230,69 @@ export class LigneVenteComponent implements AfterViewInit {
       });
     }
   }
+
+  // Exemple de logo encodé en base64 (remplace par ton propre logo)
+
+
+  genererPDF(commande: Commande) {
+    const doc = new jsPDF();
+
+    // Logo + En-tête
+    doc.addImage(this.logoBase64, 'PNG', 10, 10, 30, 30); // (image, format, x, y, width, height)
+    doc.setFontSize(18);
+    doc.text('GABERA SOFTWARE SOLUTIONS', 45, 20);
+    doc.setFontSize(12);
+    doc.text('Adresse : Quartier Koubia - Niamey, Niger', 45, 28);
+    doc.text('Téléphone : +227 90 00 00 00 | Email : info@gabera.org', 45, 34);
+
+    // Ligne horizontale
+    doc.setLineWidth(0.5);
+    doc.line(10, 42, 200, 42);
+
+    // Infos de la facture
+    let y = 50;
+    doc.setFontSize(14);
+    doc.text('FACTURE', 10, y);
+
+    doc.setFontSize(12);
+    y += 10;
+    doc.text(`N°: ${commande.id}`, 10, y);
+    y += 8;
+    doc.text(`Client: ${commande.client}`, 10, y);
+    y += 8;
+    doc.text(`Date: ${commande.date.toLocaleDateString()}`, 10, y);
+    y += 8;
+    doc.text(`Statut: ${commande.statut}`, 10, y);
+    y += 8;
+    doc.text(`Paiement: ${commande.paiement}`, 10, y);
+
+    y += 10;
+    doc.setFontSize(13);
+    doc.text('Détails des articles :', 10, y);
+    y += 10;
+
+    commande.lignes.forEach((ligne, index) => {
+      doc.setFontSize(11);
+      doc.text(
+        `${index + 1}. ${ligne.article} - Qte: ${ligne.quantite} - PU: ${ligne.prixHT} - TVA: ${ligne.tva}% - TTC: ${ligne.totalTTC}`,
+        10,
+        y
+      );
+      y += 8;
+    });
+
+    y += 10;
+    doc.setFontSize(12);
+    doc.text(`Total HT : ${commande.totalHT} FCFA`, 10, y);
+    y += 8;
+    doc.text(`TVA       : ${commande.totalTVA} FCFA`, 10, y);
+    y += 8;
+    doc.text(`Total TTC : ${commande.totalTTC} FCFA`, 10, y);
+
+    // Enregistrer le PDF
+    doc.save(`facture-${commande.id}.pdf`);
+  }
+
 
   simulerPaiement(cmd: Commande) {
     cmd.paiement = 'Payé';

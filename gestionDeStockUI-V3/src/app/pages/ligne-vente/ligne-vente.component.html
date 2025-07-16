@@ -99,14 +99,22 @@
             <button mat-icon-button color="primary" (click)="viewDetails(element)">
               <mat-icon>visibility</mat-icon>
             </button>
+
             <button mat-icon-button color="accent" (click)="editVente(element)">
               <mat-icon>edit</mat-icon>
             </button>
+
             <button mat-icon-button color="warn" (click)="deleteVente(element.id)">
               <mat-icon>delete</mat-icon>
             </button>
+
+            <!-- Génération PDF -->
+            <button mat-icon-button color="accent" (click)="genererPDF(element)">
+              <mat-icon>picture_as_pdf</mat-icon>
+            </button>
           </td>
         </ng-container>
+
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

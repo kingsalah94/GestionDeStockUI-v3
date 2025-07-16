@@ -32,3 +32,11 @@
 .text-info {
   color: #2196f3;
 }
+
+mat-icon {
+  font-size: 20px;
+}
+
+button[mat-icon-button] {
+  margin-right: 6px;
+}
