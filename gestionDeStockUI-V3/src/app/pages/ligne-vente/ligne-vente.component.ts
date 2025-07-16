@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import Papa from 'papaparse';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
@@ -21,27 +21,38 @@ interface Commande {
   totalTTC: number;
   paiement: 'Non payé' | 'Payé';
 }
+
+interface ArticleStock {
+  designation: string;
+  quantiteDisponible: number;
+  prixHT: number;
+  tva: number;
+}
+
+
 @Component({
   selector: 'app-ligne-vente',
   templateUrl: './ligne-vente.component.html',
   styleUrl: './ligne-vente.component.css'
 })
-export class LigneVenteComponent {
-  venteDataSource = new MatTableDataSource<Commande>([]);
-  displayedColumns: string[] = ['id', 'client', 'date', 'totalHT', 'totalTTC', 'status', 'actions'];
-
+export class LigneVenteComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  showVenteForm = false;
-  editMode = false;
+  displayedColumns: string[] = ['id', 'client', 'date', 'totalHT', 'totalTTC', 'status','paiement', 'actions'];
+  venteDataSource = new MatTableDataSource<Commande>([]);
+  articlesList: LigneCommande[] = [];
+  filtrePaiement: string = '';
+  filtreTexte: string = '';
+
+
   venteForm: {
     client: string;
-    articles: string[]; // contient les noms d'articles
+    articles: LigneCommande[];
     status: 'En attente' | 'Validée' | 'Livrée';
     totalHT: number;
     totalTVA: number;
     totalTTC: number;
-    lignes: LigneCommande[];
+    paiement: 'Non payé' | 'Payé';
   } = {
     client: '',
     articles: [],
@@ -49,77 +60,45 @@ export class LigneVenteComponent {
     totalHT: 0,
     totalTVA: 0,
     totalTTC: 0,
-    lignes: []
+    paiement: 'Non payé'
   };
 
-  articlesList = [
-    { designation: 'Article A', prixHT: 100, tva: 18 },
-    { designation: 'Article B', prixHT: 200, tva: 18 },
-    { designation: 'Article C', prixHT: 150, tva: 18 },
+  showVenteForm = false;
+  editMode = false;
+
+  stock: { article: string; quantite: number }[] = [
+    { article: 'Article A', quantite: 100 },
+    { article: 'Article B', quantite: 50 },
+    { article: 'Article C', quantite: 75 }
   ];
 
   ngAfterViewInit() {
     this.venteDataSource.paginator = this.paginator;
   }
 
-  toggleAddVente() {
-    this.resetForm();
-    this.showVenteForm = true;
-    this.editMode = false;
-  }
+  appliquerFiltres() {
+    this.venteDataSource.filterPredicate = (data: Commande, filter: string) => {
+      const terme = filter.trim().toLowerCase();
 
-  editVente(element: Commande) {
-    this.venteForm.client = element.client;
-    this.venteForm.status = element.statut;
-    this.venteForm.articles = element.lignes.map(l => l.article);
-    this.venteForm.lignes = JSON.parse(JSON.stringify(element.lignes));
-    this.venteForm.totalHT = element.totalHT;
-    this.venteForm.totalTVA = element.totalTVA;
-    this.venteForm.totalTTC = element.totalTTC;
-    this.editMode = true;
-    this.showVenteForm = true;
-  }
+      const correspondTexte = data.client.toLowerCase().includes(terme) ||
+        data.statut.toLowerCase().includes(terme) ||
+        data.date.toLocaleDateString().toLowerCase().includes(terme);
 
-  saveVente() {
-    this.calculerTotaux();
+      const correspondPaiement = this.filtrePaiement === '' || data.paiement === this.filtrePaiement;
 
-    const newCommande: Commande = {
-      id: Date.now(),
-      client: this.venteForm.client,
-      date: new Date(),
-      statut: this.venteForm.status,
-      paiement: 'Non payé',
-      lignes: this.venteForm.lignes,
-      totalHT: this.venteForm.totalHT,
-      totalTVA: this.venteForm.totalTVA,
-      totalTTC: this.venteForm.totalTTC,
+      return correspondTexte && correspondPaiement;
     };
 
-    if (this.editMode) {
-      // mise à jour
-      this.venteDataSource.data = this.venteDataSource.data.map(c =>
-        c.id === newCommande.id ? newCommande : c
-      );
-    } else {
-      this.venteDataSource.data = [...this.venteDataSource.data, newCommande];
-    }
-
-    this.resetForm();
+    this.venteDataSource.filter = this.filtreTexte.trim().toLowerCase();
+  }
+  onFilterTextChange(value: string) {
+    this.filtreTexte = value;
+    this.appliquerFiltres();
   }
 
-  viewDetails(element: Commande) {
-    alert(`Commande de ${element.client}, total TTC: ${element.totalTTC} FCFA`);
-  }
-
-  deleteVente(id: number) {
-    this.venteDataSource.data = this.venteDataSource.data.filter(c => c.id !== id);
-  }
-
-  cancelVenteForm() {
-    this.resetForm();
-  }
-
-  resetForm() {
+  toggleAddVente() {
+    this.showVenteForm = true;
+    this.editMode = false;
     this.venteForm = {
       client: '',
       articles: [],
@@ -127,48 +106,96 @@ export class LigneVenteComponent {
       totalHT: 0,
       totalTVA: 0,
       totalTTC: 0,
-      lignes: []
+      paiement: 'Non payé'
     };
-    this.showVenteForm = false;
-    this.editMode = false;
   }
 
-  calculerTotaux() {
-    const lignes: LigneCommande[] = this.venteForm.articles.map(articleNom => {
-      const article = this.articlesList.find(a => a.designation === articleNom);
-      if (!article) return {
-        article: articleNom,
-        quantite: 1,
-        prixHT: 0,
-        tva: 0,
-        totalHT: 0,
-        totalTTC: 0
-      };
+  cancelVenteForm() {
+    this.showVenteForm = false;
+    this.venteForm.articles = [];
+  }
 
-      const prixHT = article.prixHT;
-      const tva = article.tva;
-      const quantite = 1;
-      const totalHT = prixHT * quantite;
-      const totalTTC = totalHT * (1 + tva / 100);
+  saveVente() {
+    if (!this.venteForm.client || this.venteForm.articles.length === 0) return;
 
-      return { article: articleNom, quantite, prixHT, tva, totalHT, totalTTC };
+    // Vérifier le stock disponible
+    const stockOk = this.venteForm.articles.every((ligne) => {
+      const item = this.stock.find(s => s.article === ligne.article);
+      return item && item.quantite >= ligne.quantite;
     });
 
-    this.venteForm.lignes = lignes;
-    this.venteForm.totalHT = lignes.reduce((sum, l) => sum + l.totalHT, 0);
-    this.venteForm.totalTTC = lignes.reduce((sum, l) => sum + l.totalTTC, 0);
-    this.venteForm.totalTVA = this.venteForm.totalTTC - this.venteForm.totalHT;
+    if (!stockOk) {
+      alert('Stock insuffisant pour un ou plusieurs articles.');
+      return;
+    }
+
+    // Calcul des totaux
+    let totalHT = 0;
+    let totalTTC = 0;
+
+    this.venteForm.articles.forEach(ligne => {
+      ligne.totalHT = ligne.prixHT * ligne.quantite;
+      ligne.totalTTC = ligne.totalHT * (1 + ligne.tva / 100);
+      totalHT += ligne.totalHT;
+      totalTTC += ligne.totalTTC;
+    });
+
+    const totalTVA = totalTTC - totalHT;
+
+    const newCmd: Commande = {
+      id: Date.now(),
+      client: this.venteForm.client,
+      date: new Date(),
+      lignes: this.venteForm.articles,
+      statut: this.venteForm.status,
+      paiement: this.venteForm.paiement,
+      totalHT,
+      totalTVA,
+      totalTTC
+    };
+
+    this.venteDataSource.data = [...this.venteDataSource.data, newCmd];
+
+    // Décrémenter le stock
+    this.venteForm.articles.forEach((ligne) => {
+      const item = this.stock.find(s => s.article === ligne.article);
+      if (item) item.quantite -= ligne.quantite;
+    });
+
+    this.cancelVenteForm();
+  }
+
+  editVente(cmd: Commande) {
+    this.editMode = true;
+    this.showVenteForm = true;
+    this.venteForm = {
+      client: cmd.client,
+      articles: [...cmd.lignes],
+      status: cmd.statut,
+      totalHT: cmd.totalHT,
+      totalTVA: cmd.totalTVA,
+      totalTTC: cmd.totalTTC,
+      paiement: cmd.paiement
+    };
+  }
+
+  deleteVente(id: number) {
+    this.venteDataSource.data = this.venteDataSource.data.filter(c => c.id !== id);
+  }
+
+  viewDetails(cmd: Commande) {
+    console.log(cmd);
   }
 
   filterVentes(event: any) {
-    const value = event.target.value.trim().toLowerCase();
-    this.venteDataSource.filter = value;
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.venteDataSource.filter = filterValue.trim().toLowerCase();
   }
 
   exportVentesCSV() {
-    const csv = Papa.unparse(this.venteDataSource.data);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = window.URL.createObjectURL(blob);
+    const csvData = Papa.unparse(this.venteDataSource.data);
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = 'ventes.csv';
@@ -177,25 +204,22 @@ export class LigneVenteComponent {
 
   importVentesCSV(event: any) {
     const file = event.target.files[0];
-    if (!file) return;
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (results: any) => {
+          this.venteDataSource.data = results.data.map((row: any) => ({
+            ...row,
+            date: new Date(row.date),
+            lignes: [], // à adapter si les lignes sont incluses
+          }));
+        }
+      });
+    }
+  }
 
-    Papa.parse(file, {
-      header: true,
-      complete: (result) => {
-        const commandes = result.data.map((row: any) => ({
-          id: +row.id,
-          client: row.client,
-          date: new Date(row.date),
-          statut: row.statut as 'En attente' | 'Validée' | 'Livrée',
-          paiement: row.paiement as 'Non payé' | 'Payé',
-          lignes: [], // non supporté pour le moment
-          totalHT: parseFloat(row.totalHT),
-          totalTVA: parseFloat(row.totalTVA),
-          totalTTC: parseFloat(row.totalTTC),
-        }));
-
-        this.venteDataSource.data = commandes;
-      }
-    });
+  simulerPaiement(cmd: Commande) {
+    cmd.paiement = 'Payé';
+    alert(`Paiement de la commande #${cmd.id} confirmé.`);
   }
 }

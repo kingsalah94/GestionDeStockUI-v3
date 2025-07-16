@@ -13,7 +13,16 @@
       <div class="spacer" style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
         <mat-form-field appearance="outline" style="flex: 1;">
           <mat-label><mat-icon>filter_list</mat-icon> Filtrer</mat-label>
-          <input matInput (input)="filterVentes($event)" placeholder="Rechercher par client, date, statut..." />
+          <input matInput #searchInput placeholder="Rechercher par client, date, statut..." (input)="onFilterTextChange(searchInput.value)" />
+
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width: 200px;">
+          <mat-label><mat-icon>credit_card</mat-icon> Paiement</mat-label>
+          <mat-select [(ngModel)]="filtrePaiement" (selectionChange)="appliquerFiltres()">
+            <mat-option value="">Tous</mat-option>
+            <mat-option value="Payé">Payé</mat-option>
+            <mat-option value="Non payé">Non payé</mat-option>
+          </mat-select>
         </mat-form-field>
 
         <button mat-raised-button color="accent" (click)="exportVentesCSV()">
@@ -68,6 +77,21 @@
             }">{{ element.status }}</span>
           </td>
         </ng-container>
+        <!-- Paiement -->
+        <ng-container matColumnDef="paiement">
+          <th mat-header-cell *matHeaderCellDef>Paiement</th>
+          <td mat-cell *matCellDef="let element">
+            <button *ngIf="element.paiement === 'Non payé'"
+                    mat-button
+                    color="warn"
+                    (click)="simulerPaiement(element)">
+              <mat-icon>payment</mat-icon> Payer
+            </button>
+            <span *ngIf="element.paiement === 'Payé'" class="text-success">
+                <mat-icon>check_circle</mat-icon> Payé
+            </span>
+          </td>
+        </ng-container>
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
@@ -110,7 +134,7 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Articles</mat-label>
         <mat-select multiple [(ngModel)]="venteForm.articles">
-          <mat-option *ngFor="let article of articlesList" [value]="article">{{ article.designation }}</mat-option>
+          <mat-option *ngFor="let article of stock" [value]="article">{{ article.article }}</mat-option>
         </mat-select>
       </mat-form-field>
 
